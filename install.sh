@@ -55,7 +55,7 @@ do
             sudo dnf config-manager --set-enabled google-chrome
             ;;
         10)
-            echo " discord"
+            init=$init" discord"
             ;;
     esac
 done
