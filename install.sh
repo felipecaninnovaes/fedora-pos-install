@@ -3,6 +3,7 @@ sudo echo "fastestmirror=true" >> /etc/dnf/dnf.conf && sudo echo "deltarpm=true"
 su -c 'dnf install http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y';
 sudo dnf install fedora-workstation-repositories -y
 sudo dnf check-update
+sudo dnf install newt -y
 init=""
 
 cmd=(whiptail --separate-output --checklist "Select options:" 15 40 10)
@@ -65,4 +66,4 @@ done
         sudo dnf install $init -y
     fi
         echo "Seu Sistema sera atualizado agora :)"
-        sudo dnf upgrade
+        sudo dnf upgrade -y
