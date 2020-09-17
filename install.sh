@@ -1,12 +1,18 @@
+#!/bin/bash
 #BASE AND NECESSARY INTALLATION
 sudo echo "fastestmirror=true" >> /etc/dnf/dnf.conf && sudo echo "deltarpm=true" >> /etc/dnf/dnf.conf
 su -c 'dnf install http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y';
-sudo dnf install fedora-workstation-repositories -y
+sudo dnf install fedora-workstation-repositories -y #-> interface resposible to enable rpmfusion services EX:google_chrome
 sudo dnf check-update
-sudo dnf install newt -y
-init=""
+sudo dnf install newt -y #-> responsible service to run checkbox window
 
-cmd=(whiptail --separate-output --checklist "Select options:" 15 40 10)
+clear
+
+echo "Seu Sistema sera atualizado agora :)"
+sudo dnf upgrade -y
+
+init=""
+cmd=(whiptail --separate-output --checklist "Select options:" 20 40 14)
 options=(1 "Kdenlive" off    # any option can be set to default to "on"
          2 "Inkscape" off
          3 "Obs Studio" off
@@ -16,7 +22,10 @@ options=(1 "Kdenlive" off    # any option can be set to default to "on"
          7 "Audacity" off
          8 "Gimp" off
          9 "Google Chrome" off
-         10 "Discord" off)
+         10 "Discord" off
+         11 "GeForce/Quadro/Tesla" off
+         12 "GeForce 400/500" off
+         13 "GeForce 8/9/200/300" off)
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -57,13 +66,21 @@ do
             ;;
         10)
             init=$init" discord"
+            ;;        
+        11)
+            init=$init" akmod-nvidia"
+            ;;        
+        12)
+            init=$init" xorg-x11-drv-nvidia-390xx akmod-nvidia-390xx"
+            ;;        
+        13)
+            init=$init" xorg-x11-drv-nvidia-340xx akmod-nvidia-340xx"
             ;;
     esac
 done
+
     if [ "$init" != "" ]; then
         echo "Instalando apps $init"
         sudo dnf check-update;
         sudo dnf install $init -y
     fi
-        echo "Seu Sistema sera atualizado agora :)"
-        sudo dnf upgrade -y
